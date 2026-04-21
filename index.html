@@ -3,9 +3,86 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+	<title>WeatherNow — Real-Time Data Dashboard with Fetch API & jQuery</title>
+	<link rel="stylesheet" href="style.css"/>
 </head>
+
 <body>
-	
+<div class="container">
+
+   
+    <header class="top-bar">
+        <h1>🌤️ WeatherNow</h1>
+
+        <div class="search-box">
+            <input type="text" placeholder="Search city...">
+            <button>Search</button>
+        </div>
+    </header>
+
+    <section class="weather-card">
+
+        <div class="line skeleton title"></div>
+        <div class="line skeleton temp"></div>
+        <div class="line skeleton medium"></div>
+        <div class="line skeleton small"></div>
+        <div class="line skeleton small"></div>
+        <div class="line skeleton small"></div>
+
+    </section>
+
+  
+    <section class="forecast-section">
+        <h2>7-Day Forecast</h2>
+
+        <div class="forecast-row">
+
+            <div class="forecast-card">
+                <div class="line skeleton small"></div>
+                <div class="emoji skeleton"></div>
+                <div class="line skeleton small"></div>
+            </div>
+
+            <div class="forecast-card">
+                <div class="line skeleton small"></div>
+                <div class="emoji skeleton"></div>
+                <div class="line skeleton small"></div>
+            </div>
+
+            <div class="forecast-card">
+                <div class="line skeleton small"></div>
+                <div class="emoji skeleton"></div>
+                <div class="line skeleton small"></div>
+            </div>
+
+            <div class="forecast-card">
+                <div class="line skeleton small"></div>
+                <div class="emoji skeleton"></div>
+                <div class="line skeleton small"></div>
+            </div>
+
+            <div class="forecast-card">
+                <div class="line skeleton small"></div>
+                <div class="emoji skeleton"></div>
+                <div class="line skeleton small"></div>
+            </div>
+
+            <div class="forecast-card">
+                <div class="line skeleton small"></div>
+                <div class="emoji skeleton"></div>
+                <div class="line skeleton small"></div>
+            </div>
+
+            <div class="forecast-card">
+                <div class="line skeleton small"></div>
+                <div class="emoji skeleton"></div>
+                <div class="line skeleton small"></div>
+            </div>
+
+        </div>
+    </section>
+
+</div>
+
 </body>
 </html>
