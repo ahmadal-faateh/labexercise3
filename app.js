@@ -2,6 +2,10 @@ const searchBtn = document.querySelector("button");
 const input = document.querySelector("input");
 const weatherCard = document.querySelector(".weather-card");
 const forecastCards = document.querySelectorAll(".forecast-card");
+const recentContainer = document.createElement("div");
+recentContainer.className = "recent-searches";
+document.querySelector(".top-bar").after(recentContainer);
+
 const weatherCodes = {
 0:  ["Clear Sky", "☀️"],
 1:  ["Mainly Clear", "🌤️"],
@@ -102,6 +106,7 @@ async function fetchWeather(city) {
 
         displayWeather(place.name, weatherData);
         getLocalTime(timezone);
+        saveRecentSearch(place.name);
     }
     catch(error) {
         weatherCard.innerHTML = `
@@ -112,6 +117,42 @@ async function fetchWeather(city) {
     }
 }
 
+function saveRecentSearch(city) {
+    let searches = JSON.parse(localStorage.getItem("recentWeather")) || [];
+    
+    searches = searches.filter(s => s.toLowerCase() !== city.toLowerCase());
+    searches.unshift(city);
+    
+    if (searches.length > 5) searches.pop();
+    
+    localStorage.setItem("recentWeather", JSON.stringify(searches));
+    displayRecentSearches();
+}
+
+function displayRecentSearches() {
+    const searches = JSON.parse(localStorage.getItem("recentWeather")) || [];
+    recentContainer.innerHTML = ""; 
+
+    if (searches.length > 0) {
+        const label = document.createElement("span");
+        label.className = "recent-label";
+        label.textContent = "Recent:";
+        recentContainer.appendChild(label);
+    }
+
+    searches.forEach(city => {
+        const chip = document.createElement("span");
+        chip.className = "search-chip";
+        chip.textContent = city;
+        
+        chip.addEventListener("click", () => {
+            input.value = city;
+            fetchWeather(city);
+        });
+        
+        recentContainer.appendChild(chip);
+    });
+}
 
 function displayWeather(city, data) {
 
