@@ -3,6 +3,11 @@ const input = document.querySelector("input");
 const weatherCard = document.querySelector(".weather-card");
 const forecastCards = document.querySelectorAll(".forecast-card");
 const recentContainer = document.createElement("div");
+let currentUnit = "C"; 
+let weatherDataCache = null; 
+
+const tempToggle = document.querySelector("#tempToggle");
+const unitText = document.querySelector("#unitText");
 recentContainer.className = "recent-searches";
 document.querySelector(".top-bar").after(recentContainer);
 
@@ -154,9 +159,29 @@ function displayRecentSearches() {
     });
 }
 
+if (tempToggle) {
+    tempToggle.addEventListener("change", () => {
+        currentUnit = tempToggle.checked ? "F" : "C";
+        if (unitText) unitText.textContent = currentUnit === "F" ? "Fahrenheit" : "Celsius";
+        
+        if (weatherDataCache) {
+            displayWeather(weatherDataCache.cityName, weatherDataCache.data);
+        }
+    });
+}
+
+function formatTemp(celsius) {
+    if (currentUnit === "F") {
+        return ((celsius * 9) / 5 + 32).toFixed(1);
+    }
+    return celsius;
+}
+
 function displayWeather(city, data) {
 
-    let temp = data.current_weather.temperature;
+    weatherDataCache = { cityName: city, data: data };
+
+    let temp = formatTemp(data.current_weather.temperature);
     let wind = data.current_weather.windspeed;
     let code = data.current_weather.weathercode;
     let humidity = data.hourly.relativehumidity_2m[0];
@@ -164,7 +189,7 @@ function displayWeather(city, data) {
 
     weatherCard.innerHTML = `
         <h2>${city}</h2>
-        <h1>${temp}°C</h1>
+        <h1>${temp}°${currentUnit}</h1>
         <p>${info[1]} ${info[0]}</p>
         <p>Humidity: ${humidity}%</p>
         <p>Wind Speed: ${wind} km/h</p>
@@ -172,17 +197,11 @@ function displayWeather(city, data) {
     `;
 
     for (let i = 0; i < 7; i++) {
-
-        let max = data.daily.temperature_2m_max[i];
-        let min = data.daily.temperature_2m_min[i];
+        let max = formatTemp(data.daily.temperature_2m_max[i]);
+        let min = formatTemp(data.daily.temperature_2m_min[i]);
         let code = data.daily.weathercode[i];
-
         let info = weatherCodes[code] || ["Unknown", "❓"];
-
-        let day = new Date(data.daily.time[i])
-            .toLocaleDateString("en-US", {
-                weekday: "short"
-            });
+        let day = new Date(data.daily.time[i]).toLocaleDateString("en-US", { weekday: "short" });
 
         forecastCards[i].innerHTML = `
             <h4>${day}</h4>
