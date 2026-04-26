@@ -85,7 +85,8 @@ async function fetchWeather(city) {
 
         if (!geoData.results || geoData.results.length === 0) {
         weatherCard.innerHTML = `<h2>City not found</h2>`;
-        document.querySelector(".forecast-section").style.display = "none";
+       const forecastSection = document.querySelector(".forecast-section");
+       if (forecastSection) forecastSection.style.display = "none";
         return;
         }
         document.querySelector(".forecast-section").style.display = "block";
@@ -95,7 +96,7 @@ async function fetchWeather(city) {
         let lon = place.longitude;
         let timezone = place.timezone;
 
-        let weatherURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,relativehumidity_2m,windspeed_10m&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto`;
+        let weatherURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,relativehumidity_2m,windspeed_10m&daily=temperature_2m_max,temperature_2m_min,weathercode`;
 
         let weatherRes = await fetch(weatherURL, {
             signal: controller.signal
